@@ -144,31 +144,33 @@ with tab_run:
         col3.metric("Average Pace (min/km)", f"{avg_pace:.2f}")
         st.divider()
         #CHART: Distance Evolution
+        st.subheader("Distance Evolution")
         run_df_distance = run_df[['start_date_local', 'distance_km']]
         st.line_chart(run_df_distance,
                       x='start_date_local',
                       y='distance_km')
         st.divider()
         #CHART: HeartRate Evolution
+        st.subheader("HeartRate Evolution")
         run_df_heart= run_df[['start_date_local', 'average_heartrate']]
         st.line_chart(run_df_heart,
                       x='start_date_local',
                       y='average_heartrate')
         st.divider()
         #CHART: Time Evolution
+        st.subheader("Time Evolution")
         run_df_time= run_df[['start_date_local', 'moving_time']]
         st.line_chart(run_df_time,
                       x='start_date_local',
                       y='moving_time')
         st.divider()
         #CHART: Pace Evolution
-        run_df_pace= run_df[['start_date_local', 'average_speed']]
+        st.subheader("Pace Evolution")
+        run_df_pace= run_df[['start_date_local', 'pace_min_km']]
         st.line_chart(run_df_pace,
                       x='start_date_local',
-                      y='average_speed')
+                      y='pace_min_km')
         st.divider()
-
-
         st.dataframe(run_df)
         
         
@@ -185,8 +187,36 @@ with tab_swim:
         total_swim_distance = swim_df['distance'].sum()
         col1.metric("Total Swims", f"{total_swim_activities}")
         col2.metric("Total Distance (m)", f"{total_swim_distance}")
+        st.divider()
 
-
+        #CHART: Distance Evolution
+        st.subheader("Distance Evolution")
+        swim_df_distance = swim_df[['start_date_local', 'distance']]
+        st.line_chart(swim_df_distance,
+                      x='start_date_local',
+                      y='distance')
+        st.divider()
+        #CHART: Heart Evolution
+        st.subheader("Heart Evolution")
+        swim_df_distance = swim_df[['start_date_local', 'average_heartrate']]
+        st.line_chart(swim_df_distance,
+                      x='start_date_local',
+                      y='average_heartrate')
+        st.divider()
+        #CHART: Elapsed Evolution
+        st.subheader("Time Evolution")
+        swim_df_distance = swim_df[['start_date_local', 'moving_time']]
+        st.line_chart(swim_df_distance,
+                      x='start_date_local',
+                      y='moving_time')
+        st.divider()
+        #CHART: Pace Evolution
+        st.subheader("Pace Evolution")
+        swim_df_distance = swim_df[['start_date_local', 'pace_seconds_100m']]
+        st.line_chart(swim_df_distance,
+                      x='start_date_local',
+                      y='pace_seconds_100m')
+        st.divider()
         st.dataframe(swim_df)
     else:
         st.warning(f"Could not find swim data at `{swim_file}`.")
@@ -203,6 +233,39 @@ with tab_bike:
         col1.metric("Total Runs", f"{total_runs}")
         col2.metric("Total Distance (km)", f"{total_distance:.2f}")
         col3.metric("Average Pace (min/km)", f"{avg_pace:.2f}")
+
+        #CHART: Distance Evolution
+        st.subheader("Distance Evolution")
+        bike_df_distance = bike_df[['start_date_local', 'distance']]
+        st.line_chart(bike_df_distance,
+                    x='start_date_local',
+                    y='distance')
+        st.divider()
+
+        #CHART: HeartRate Evolution
+        st.subheader("Heart Evolution")
+        bike_df_heart = bike_df[['start_date_local', 'average_heartrate']]
+        st.line_chart(bike_df_heart,
+                    x='start_date_local',
+                    y='average_heartrate')
+        st.divider()
+
+        #CHART: Elapsed Time Evolution
+        st.subheader("Time Evolution")
+        bike_df_time = bike_df[['start_date_local', 'moving_time']]
+        st.line_chart(bike_df_time,
+                    x='start_date_local',
+                    y='moving_time')
+        st.divider()
+
+        #CHART: Pace Evolution
+        st.subheader("Pace Evolution")
+        bike_df_pace = bike_df[['start_date_local', 'pace_seconds_100m']] 
+        st.line_chart(bike_df_pace,
+                    x='start_date_local',
+                    y='pace_seconds_100m')
+        st.divider()
+
         st.dataframe(bike_df)
     else:
         st.warning(f"Could not find bike data at `{bike_file}`.")
