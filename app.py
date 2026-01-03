@@ -51,6 +51,7 @@ df = pd.concat([run_df, swim_df, bike_df], ignore_index=True)
 # --- Dashboard Tabs ---
 tab_all,tab_run, tab_swim, tab_bike = st.tabs(["📈 All", "🏃‍♂️ Running", "🏊‍♂️ Swimming", "🚴‍♂️ Biking"])
 
+########## TAB ALL ##########
 with tab_all:
     st.header("Overall Activity Totals")
     # Data Transformation for metrics
@@ -78,7 +79,7 @@ with tab_all:
     st.subheader("Activity Count Totals")
     st.bar_chart(activity_counts.set_index("Activity Type"))
     
-
+    st.divider()
     # CHART: Activities by month filtered by year
     st.subheader("Activity Count by Month")
     # Unique Years
@@ -109,7 +110,7 @@ with tab_all:
 
     
     st.plotly_chart(fig, use_container_width=True)
-
+    st.divider()
     #Activities by Year
     # Get Month name
     df['Year'] = df['start_date_local'].dt.year
@@ -126,13 +127,13 @@ with tab_all:
 
     st.subheader("Activity Count by Year")
     st.plotly_chart(fig_year, use_container_width=True)
-    
 
 
+########## TAB RUN ##########
 with tab_run:
 
     if run_df is not None:
-        
+        # METRICS
         col1, col2, col3 = st.columns(3)
         total_distance = run_df['distance_km'].sum()
         total_runs = len(run_df)
@@ -141,22 +142,67 @@ with tab_run:
         col1.metric("Total Runs", f"{total_runs}")
         col2.metric("Total Distance (km)", f"{total_distance:.2f}")
         col3.metric("Average Pace (min/km)", f"{avg_pace:.2f}")
+        st.divider()
+        #CHART: Distance Evolution
+        run_df_distance = run_df[['start_date_local', 'distance_km']]
+        st.line_chart(run_df_distance,
+                      x='start_date_local',
+                      y='distance_km')
+        st.divider()
+        #CHART: HeartRate Evolution
+        run_df_heart= run_df[['start_date_local', 'average_heartrate']]
+        st.line_chart(run_df_heart,
+                      x='start_date_local',
+                      y='average_heartrate')
+        st.divider()
+        #CHART: Time Evolution
+        run_df_time= run_df[['start_date_local', 'moving_time']]
+        st.line_chart(run_df_time,
+                      x='start_date_local',
+                      y='moving_time')
+        st.divider()
+        #CHART: Pace Evolution
+        run_df_pace= run_df[['start_date_local', 'average_speed']]
+        st.line_chart(run_df_pace,
+                      x='start_date_local',
+                      y='average_speed')
+        st.divider()
+
 
         st.dataframe(run_df)
-        st.divider()
+        
         
     else:
         st.warning(f"Could not find run data at `{run_file}`.")
         st.info("Please run the `strava.py` script first to generate the activity files.")
 
+########## TAB SWIM ##########
 with tab_swim:
     if swim_df is not None:
+        # METRICS
+        col1,col2 = st.columns(2)
+        total_swim_activities = len(swim_df)
+        total_swim_distance = swim_df['distance'].sum()
+        col1.metric("Total Swims", f"{total_swim_activities}")
+        col2.metric("Total Distance (m)", f"{total_swim_distance}")
+
+
         st.dataframe(swim_df)
     else:
         st.warning(f"Could not find swim data at `{swim_file}`.")
 
+########## TAB BIKE ##########
 with tab_bike:
     if bike_df is not None:
+        # METRICS
+        col1, col2, col3 = st.columns(3)
+        total_bike_distance = bike_df['distance'].sum()/100
+        total_bike_activities = len(bike_df)
+        avg_pace = bike_df['pace_seconds_100m'].mean()
+        
+        col1.metric("Total Runs", f"{total_runs}")
+        col2.metric("Total Distance (km)", f"{total_distance:.2f}")
+        col3.metric("Average Pace (min/km)", f"{avg_pace:.2f}")
         st.dataframe(bike_df)
     else:
         st.warning(f"Could not find bike data at `{bike_file}`.")
