@@ -230,7 +230,7 @@ with tab_bike:
         total_bike_activities = len(bike_df)
         avg_pace_bike = bike_df['pace_seconds_100m'].mean()
         
-        col1.metric("Total Runs", f"{total_bike_activities}")
+        col1.metric("Total Bike Activities", f"{total_bike_activities}")
         col2.metric("Total Distance (km)", f"{total_bike_distance:.2f}")
         col3.metric("Average Pace (min/km)", f"{avg_pace_bike:.2f}")
 
